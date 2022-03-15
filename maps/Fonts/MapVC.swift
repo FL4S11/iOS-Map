@@ -31,6 +31,17 @@ class MapVC: UIViewController, CLLocationManagerDelegate, MKMapViewDelegate {
         pointsPositions()
     }
     
+    func mapToCoordinate(coordinate: CLLocationCoordinate2D){
+    let region = MKCoordinateRegion.init(center: coordinate, latitudinalMeters: 1000, longitudinalMeters: 1000)
+        mapView.setRegion(region, animated: true)
+    }
+    
+    func locationManager( _ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]){
+        if let locations = locations.last?.coordinate {
+            mapToCoordinate(coordinate: location)
+        }
+    }
+    
     func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
         if annotation.coordinate.latitude != mapView.userLocation.coordinate.latitude && annotation.coordinate.longitude != mapView.userLocation.coordinate.longitude{
             let marker = MKMarkerAnnotationView(annotation: annotation, reuseIdentifier: "marker")
